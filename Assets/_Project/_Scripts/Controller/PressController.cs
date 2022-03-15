@@ -10,6 +10,8 @@ namespace PressIt
         [SerializeField] Vector3 lastPosition = new Vector3(0f, 0f, 0f);
         [Range(1f, 50f)] [SerializeField] float speed = 1f;
 
+        public Vector3 LastPosition { get => lastPosition; }
+
         private void Start()
         {
             transform.position = startPosition;
@@ -18,7 +20,7 @@ namespace PressIt
         {
             if (Input.GetMouseButton(0))
             {
-                MoveTo(lastPosition);
+                MoveTo(LastPosition);
             }
             else
             {
