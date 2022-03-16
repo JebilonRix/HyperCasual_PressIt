@@ -9,6 +9,7 @@ namespace PressIt
         [SerializeField] PressController pressController;
         [SerializeField] Transform pressPoint;
         [SerializeField] float checkTime = 1f;
+        [SerializeField] GameObject[] smokes;
         private BoxCollider collider;
 
         private void Awake()
@@ -30,7 +31,6 @@ namespace PressIt
                 collider.enabled = true;
             }
         }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other != null)
@@ -38,7 +38,9 @@ namespace PressIt
                 var obj = other.GetComponent<IPresseble>();
                 var percent = obj.GetTransform().position.z - pressPoint.position.z;
 
-                // Debug.Log(percent);
+                int a = Random.Range(0, smokes.Length);
+                smokes[a].SetActive(true);
+                smokes[a].transform.position = pressPoint.position;
 
                 obj.Smash(Mathf.Abs(percent) * 100);
             }

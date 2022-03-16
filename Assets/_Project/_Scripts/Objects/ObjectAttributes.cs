@@ -33,7 +33,6 @@ namespace PressIt
             if (_bank == null)
             {
                 _bank = FindObjectOfType<PlayerBank>();
-                Debug.Log("buldum");
             }
 
             IsSpawned = true;
