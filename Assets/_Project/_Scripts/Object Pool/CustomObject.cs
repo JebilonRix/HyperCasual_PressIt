@@ -12,13 +12,15 @@ namespace ObjectPool
 
         public string Tag { get => tag; private set => tag = value; }
         public bool IsSpawned { get => _isSpawned; set => _isSpawned = value; }
-
+        private void Awake()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
         private void FixedUpdate()
         {
             if (IsSpawned)
             {
                 rb.velocity = new Vector3(0, 0, -speed);
-
             }
         }
 
@@ -26,6 +28,7 @@ namespace ObjectPool
         public virtual void OnObjectSpawned()
         {
             IsSpawned = true;
+            speed = GetComponentInParent<CustomObject>().speed;
             transform.rotation = Quaternion.Euler(-90, 0, 0);
         }
         public virtual void DeactivateMe()
