@@ -1,20 +1,27 @@
 using ObjectPool;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PressIt
 {
     public class ResetPoints : MonoBehaviour
     {
-        [SerializeField] new string[] tags;
+        [SerializeField] string[] tags;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other != null)
             {
-                var obj = other.GetComponent<IPooledObject>();
-                obj.DeactivateMe();
+                Debug.Log(other.gameObject.name);
+
+                IPooledObject obj = other.GetComponent<IPooledObject>();
+
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    if (obj.GetTag() == tags[i])
+                    {
+                        obj.DeactivateMe();
+                    }
+                }
             }
         }
     }

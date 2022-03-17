@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PressIt
@@ -7,9 +5,8 @@ namespace PressIt
     public class PressCollider : MonoBehaviour
     {
         [SerializeField] PressController pressController;
-        [SerializeField] Transform pressPoint;
         [SerializeField] float checkTime = 1f;
-        [SerializeField] GameObject[] smokes;
+        [SerializeField] GameObject smokeParticle;
         private BoxCollider collider;
 
         private void Awake()
@@ -18,9 +15,9 @@ namespace PressIt
         }
         private void Start()
         {
-            InvokeRepeating(nameof(Test), checkTime, checkTime);
+            InvokeRepeating(nameof(ColliderChanger), checkTime, checkTime);
         }
-        private void Test()
+        private void ColliderChanger()
         {
             if (pressController.transform.position == pressController.LastPosition)
             {
@@ -35,14 +32,17 @@ namespace PressIt
         {
             if (other != null)
             {
-                var obj = other.GetComponent<IPresseble>();
-                var percent = obj.GetTransform().position.z - pressPoint.position.z;
+                IPresseble obj = other.GetComponent<IPresseble>();
 
-                int a = Random.Range(0, smokes.Length);
-                smokes[a].SetActive(true);
-                smokes[a].transform.position = pressPoint.position;
+                Transform objTransform = obj.GetGameObject().transform;
+                objTransform.localScale = new Vector3(objTransform.localScale.x, 3f, objTransform.localScale.z);
+                objTransform.localPosition -= Vector3.up * 0.5f;
 
-                obj.Smash(Mathf.Abs(percent) * 100);
+                smokeParticle.SetActive(true);
+                smokeParticle.transform.position = pressController.PressPoint.position;
+
+                float percent = obj.GetTransform().position.z - pressController.PressPoint.position.z;
+                obj.Smash(Mathf.Abs(percent) * 100);    
             }
             else
             {

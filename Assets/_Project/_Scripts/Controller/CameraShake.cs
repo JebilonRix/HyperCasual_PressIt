@@ -17,7 +17,7 @@ namespace PressIt
             camera = GetComponent<Camera>();
             originalPos = transform.position;
         }
-        public IEnumerator Shake(float duration, float magnitude)
+        public IEnumerator Shake(float duration)
         {
             if (!isShaked)
             {
@@ -25,7 +25,7 @@ namespace PressIt
 
                 while (elapsed < duration)
                 {
-                    transform.position = new Vector3(ShakeMagnitude(magnitude), ShakeMagnitude(magnitude), originalPos.z);
+                    transform.position = new Vector3(Random.insideUnitSphere.x, Random.insideUnitSphere.y, originalPos.z);
 
                     elapsed += Time.deltaTime;
 
@@ -34,11 +34,6 @@ namespace PressIt
 
                 transform.position = originalPos;
             }
-        }
-
-        private static float ShakeMagnitude(float magnitude)
-        {
-            return Random.Range(-1f, 1f) * magnitude;
         }
     }
 }

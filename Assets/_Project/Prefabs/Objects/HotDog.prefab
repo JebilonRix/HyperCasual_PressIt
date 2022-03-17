@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5965843551875630716}
   - component: {fileID: 1186340196486743907}
   - component: {fileID: 1111152216444327290}
-  - component: {fileID: 7317972494177263099}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Hotdog
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7317972494177263099
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468722205372180349}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2957415775430100077
 GameObject:
   m_ObjectHideFlags: 0

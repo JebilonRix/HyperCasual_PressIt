@@ -8,5 +8,6 @@ namespace PressIt
     {
         void Smash(float multiplier);
         Transform GetTransform();
+        GameObject GetGameObject();
     }
 }

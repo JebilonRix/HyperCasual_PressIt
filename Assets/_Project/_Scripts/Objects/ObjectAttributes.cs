@@ -7,12 +7,18 @@ namespace PressIt
     public class ObjectAttributes : MonoBehaviour, IPresseble, IPooledObject
     {
         [SerializeField] string _tag;
-        [SerializeField] float _speed;
-        [SerializeField] uint _moneyValue;
+        [SerializeField] float _speed = 2f;
+        [SerializeField] float stopSeconds = 0.5f;
+        [SerializeField] uint _moneyValue = 10;
 
         private PlayerBank _bank;
         private Rigidbody _rb;
         private bool _isSpawned;
+        private bool _isSmashed;
+        private Vector3 _scale;
+        private Vector3 _pos;
+        private float counter = 0f;
+
         public string Tag { get => _tag; private set => _tag = value; }
         public bool IsSpawned { get => _isSpawned; set => _isSpawned = value; }
 
@@ -20,20 +26,30 @@ namespace PressIt
         {
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
+            _scale = transform.localScale;
+            _pos = transform.position;
         }
         private void FixedUpdate()
         {
-            if (IsSpawned)
+            if (IsSpawned && !_isSmashed)
             {
                 _rb.velocity = new Vector3(0, 0, -_speed);
             }
+            else if (IsSpawned && _isSmashed)
+            {
+                StopAfterSmash();
+            }
         }
+
         public void OnObjectSpawned()
         {
             if (_bank == null)
             {
                 _bank = FindObjectOfType<PlayerBank>();
             }
+
+            transform.localScale = _scale;
+            transform.position = _pos;
 
             IsSpawned = true;
         }
@@ -44,28 +60,29 @@ namespace PressIt
         }
         public void Smash(float multiplier)
         {
-            uint kat_la_na_rak;
+            uint kat_lana_rak;
 
             if (multiplier <= 25)
             {
-                kat_la_na_rak = 5;
+                kat_lana_rak = 5;
             }
             else if (multiplier > 25 && multiplier <= 50)
             {
-                kat_la_na_rak = 3;
+                kat_lana_rak = 3;
             }
             else if (multiplier > 50 && multiplier <= 75)
             {
-                kat_la_na_rak = 2;
+                kat_lana_rak = 2;
             }
             else
             {
-                kat_la_na_rak = 1;
+                kat_lana_rak = 1;
             }
 
-            _bank.GainMoney(_moneyValue * kat_la_na_rak);
+            _bank.GainMoney(_moneyValue * kat_lana_rak);
 
-            DeactivateMe();
+            _isSmashed = true;
+            //DeactivateMe();
         }
         public GameObject GetGameObject()
         {
@@ -78,6 +95,18 @@ namespace PressIt
         public Transform GetTransform()
         {
             return transform;
+        }
+        private void StopAfterSmash()
+        {
+            if (counter >= stopSeconds)
+            {
+                _isSmashed = false;
+            }
+            else
+            {
+                _rb.velocity = new Vector3(0, 0, 0);
+                counter += Time.deltaTime;
+            }
         }
     }
 }
