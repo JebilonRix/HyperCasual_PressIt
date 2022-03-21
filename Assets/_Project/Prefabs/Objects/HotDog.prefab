@@ -216,4 +216,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tag: Hotdog
   _speed: 2
+  stopSeconds: 0.5
   _moneyValue: 10

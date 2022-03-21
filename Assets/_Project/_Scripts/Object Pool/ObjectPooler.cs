@@ -7,7 +7,8 @@ namespace ObjectPool
 {
     public class ObjectPooler : MonoBehaviour
     {
-        [SerializeField] bool _isDebug;
+        // public Transform ropeParent;
+
         [SerializeField] bool _isDontDestroy;
         [SerializeField] List<Pool> _pools;
 
@@ -89,7 +90,7 @@ namespace ObjectPool
             }
             else
             {
-                BugHandler.Log(nameof(GetObject) + " The object do not have IPooledObject interface.", _isDebug);
+                //BugHandler.Log(nameof(GetObject) + " The object do not have IPooledObject interface.", _isDebug);
             }
 
             SpawnedObjects++;
@@ -101,7 +102,7 @@ namespace ObjectPool
         /// </summary>
         public void RelaseObject(string tag, GameObject obj)
         {
-            _poolDictionary[tag].Enqueue(obj.GetComponent<IPooledObject>());            
+            _poolDictionary[tag].Enqueue(obj.GetComponent<IPooledObject>());
             obj.SetActive(false);
             SpawnedObjects--;
         }
@@ -157,17 +158,35 @@ namespace ObjectPool
                 if (tag == _pools[i].Tag)
                 {
                     obj = Instantiate(_pools[i].ObjectPrefab).GetComponent<IPooledObject>();
+
+                    //if (_pools[i].Tag == "Rope")
+                    //{
+                    //    SetGameObjectAttributes(obj.GetGameObject(), "Rope");
+                    //}
+                    //else
+                    //{
                     SetGameObjectAttributes(obj.GetGameObject());
+                    //}
                 }
+
             }
 
             return obj;
         }
         private void SetGameObjectAttributes(GameObject obj, bool isActive = false)
         {
-            obj.SetActive(isActive);
             obj.transform.parent = transform;
+            obj.SetActive(isActive);
         }
+        //private void SetGameObjectAttributes(GameObject obj, string tag, bool isActive = false)
+        //{
+        //    obj.SetActive(isActive);
+
+        //    if (tag == "Rope")
+        //    {
+        //        obj.transform.SetParent(ropeParent);
+        //    }
+        //}
         #endregion
     }
 
@@ -184,7 +203,6 @@ namespace ObjectPool
     }
     internal interface IPooledObject
     {
-        string Tag { get; }
         bool IsSpawned { get; set; }
         void OnObjectSpawned();
         void DeactivateMe();

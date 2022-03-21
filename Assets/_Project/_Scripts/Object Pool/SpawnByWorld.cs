@@ -41,12 +41,12 @@ namespace ObjectPool
             {
                 case SpawnType.RandomSpawnInArea:
 
-                    ObjectPooler.Instance.GetObject(_objectTag, SpawnRandomlyInArea());
+                   // ObjectPooler.Instance.GetObject(_objectTags, SpawnRandomlyInArea());
                     break;
 
                 case SpawnType.RandomSpawnInPoints:
 
-                    ObjectPooler.Instance.GetObject(_objectTag, SpawnRandomlyInSpawnPoints(_spawnPoints));
+                   // ObjectPooler.Instance.GetObject(_objectTags, SpawnRandomlyInSpawnPoints(_spawnPoints));
                     break;
             }
         }

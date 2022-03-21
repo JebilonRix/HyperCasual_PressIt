@@ -1,33 +1,43 @@
+using Obi;
 using ObjectPool;
 using UnityEngine;
 
 namespace PressIt
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(MeshCollider))]
     public class ObjectAttributes : MonoBehaviour, IPresseble, IPooledObject
     {
         [SerializeField] string _tag;
         [SerializeField] float _speed = 2f;
         [SerializeField] float stopSeconds = 0.5f;
         [SerializeField] uint _moneyValue = 10;
+        // [SerializeField] ObiRope rope;
 
         private PlayerBank _bank;
         private Rigidbody _rb;
+        private MeshCollider _meshCollider;
         private bool _isSpawned;
         private bool _isSmashed;
         private Vector3 _scale;
         private Vector3 _pos;
         private float counter = 0f;
 
-        public string Tag { get => _tag; private set => _tag = value; }
         public bool IsSpawned { get => _isSpawned; set => _isSpawned = value; }
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
             _rb.useGravity = false;
+
             _scale = transform.localScale;
             _pos = transform.position;
+
+            _meshCollider = GetComponent<MeshCollider>();
+            _meshCollider.convex = true;
+            _meshCollider.isTrigger = true;
+
+            transform.localScale = _scale;
+            transform.position = _pos;
         }
         private void FixedUpdate()
         {
@@ -40,7 +50,6 @@ namespace PressIt
                 StopAfterSmash();
             }
         }
-
         public void OnObjectSpawned()
         {
             if (_bank == null)
@@ -48,15 +57,12 @@ namespace PressIt
                 _bank = FindObjectOfType<PlayerBank>();
             }
 
-            transform.localScale = _scale;
-            transform.position = _pos;
-
             IsSpawned = true;
         }
         public void DeactivateMe()
         {
             IsSpawned = false;
-            ObjectPooler.Instance.RelaseObject(Tag, gameObject);
+            ObjectPooler.Instance.RelaseObject(_tag, gameObject);
         }
         public void Smash(float multiplier)
         {
@@ -82,7 +88,7 @@ namespace PressIt
             _bank.GainMoney(_moneyValue * kat_lana_rak);
 
             _isSmashed = true;
-            //DeactivateMe();
+            //rope.gameObject.SetActive(true);
         }
         public GameObject GetGameObject()
         {
@@ -90,7 +96,7 @@ namespace PressIt
         }
         public string GetTag()
         {
-            return Tag;
+            return _tag;
         }
         public Transform GetTransform()
         {

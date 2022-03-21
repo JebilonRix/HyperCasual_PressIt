@@ -35,14 +35,14 @@ namespace PressIt
                 IPresseble obj = other.GetComponent<IPresseble>();
 
                 Transform objTransform = obj.GetGameObject().transform;
-                objTransform.localScale = new Vector3(objTransform.localScale.x, 3f, objTransform.localScale.z);
-                objTransform.localPosition -= Vector3.up * 0.5f;
+                objTransform.localScale = new Vector3(objTransform.localScale.x, objTransform.localScale.y / 5, objTransform.localScale.z);
+                //  objTransform.localPosition -= Vector3.up * 0.5f;
 
                 smokeParticle.SetActive(true);
                 smokeParticle.transform.position = pressController.PressPoint.position;
 
                 float percent = obj.GetTransform().position.z - pressController.PressPoint.position.z;
-                obj.Smash(Mathf.Abs(percent) * 100);    
+                obj.Smash(Mathf.Abs(percent) * 100);
             }
             else
             {

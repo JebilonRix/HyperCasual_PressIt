@@ -11,8 +11,6 @@ namespace PressIt
         public void GainMoney(uint amount)
         {
             _money += amount;
-
-            Debug.Log(amount);
         }
     }
 }

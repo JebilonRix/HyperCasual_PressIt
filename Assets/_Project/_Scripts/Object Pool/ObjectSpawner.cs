@@ -13,7 +13,7 @@ namespace ObjectPool
         [SerializeField] protected bool _isLoop;
         [Space]
         [Header("Set Object")]
-        [SerializeField] protected string _objectTag;
+        [SerializeField] protected string[] _objectTags;
 
         protected TimerWorks _timer;
         private bool _isCalled = false;
